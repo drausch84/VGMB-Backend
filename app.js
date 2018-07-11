@@ -34,7 +34,7 @@ if (!isProduction) {
 if(isProduction){
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect('mongodb://localhost/VGMB');
+  mongoose.connect('https://infinite-caverns-26242.herokuapp.com/');
   mongoose.set('debug', true);
 }
 // bringing in our User model for authentication
