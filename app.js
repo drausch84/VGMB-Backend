@@ -1,5 +1,4 @@
-var fs = require('fs'),
-    http = require('http'),
+var http = require('http'),
     path = require('path'),
     methods = require('methods'),
     express = require('express'),
@@ -25,7 +24,7 @@ app.use(bodyParser.json());
 app.use(require('method-override')());
 app.use(express.static(__dirname + '/public'));
 
-app.use(session({ secret: 'vgstart', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
+app.use(session({ secret: 'buckeyes10', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false  }));
 
 if (!isProduction) {
   app.use(errorhandler());
@@ -34,23 +33,38 @@ if (!isProduction) {
 if(isProduction){
   mongoose.connect(process.env.MONGODB_URI);
 } else {
-  mongoose.connect('https://infinite-caverns-26242.herokuapp.com/');
+  mongoose.connect('mongodb://localhost/VGMB');
   mongoose.set('debug', true);
 }
-// bringing in our User model for authentication
-require("./models/User");
 
-// bringing in our Article model 
-require("./models/Article");
+require('./models/User');
+require('./models/Article');
+require('./models/Comment');
+require('./config/passport');
 
-// bringing in our Comment model
-require("./models/Comment");
-
-// bringing in our passportjs file
-require ("./config/passport");
-
-// bringing in our routes
 app.use(require('./routes'));
+
+// CORS to handle the Access-Control-Allow-Origin to work
+
+// Add headers
+app.use(function (req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'https://infinite-caverns-26242.herokuapp.com/');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

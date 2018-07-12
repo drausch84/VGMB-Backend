@@ -1,22 +1,23 @@
 {
-  "name": "conduit-node",
+  "name": "VGMB-BackEND",
   "version": "1.0.0",
-  "description": "conduit on node",
+  "description": "VGStart's backend for message board",
   "main": "app.js",
   "scripts": {
+    "mongo:start": "docker run --name VGMB-mongo -p 27017:27017 mongo & sleep 5",
     "start": "node ./app.js",
     "dev": "nodemon ./app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "stop": "lsof -ti :3000 | xargs kill",
+    "mongo:stop": "docker stop VGMB-mongo && docker rm VGMB-mongo"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gothinkster/productionready-node-api.git"
+    "url": "git@github.com:drausch84/VGMB-Backend.git"
   },
   "license": "ISC",
   "dependencies": {
     "body-parser": "1.15.0",
     "cors": "2.7.1",
-    "dotenv": "2.0.0",
     "ejs": "2.4.1",
     "errorhandler": "1.4.3",
     "express": "4.13.4",
@@ -28,12 +29,14 @@
     "mongoose": "4.4.10",
     "mongoose-unique-validator": "1.0.2",
     "morgan": "1.7.0",
-    "nodemon": "^1.18.1",
-    "npm": "^6.1.0",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
     "request": "2.69.0",
     "slug": "0.9.1",
     "underscore": "1.8.3"
+  },
+  "devDependencies": {
+    "newman": "^3.8.2",
+    "nodemon": "^1.11.0"
   }
 }
